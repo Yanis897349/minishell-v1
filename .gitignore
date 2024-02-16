@@ -6,6 +6,7 @@
 
 # Personnal
 /include
+/tester
 
 # Object files
 *.o
