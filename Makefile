@@ -6,7 +6,10 @@
 ##
 
 SRC = ./src/external.c \
-	./src/shell.c
+	./src/shell.c \
+	./src/command.c \
+	./src/Builtins/exit.c \
+	./src/Builtins/cd.c
 SRC_TEST = ./tests/test_external.c
 MAIN = ./src/main.c
 

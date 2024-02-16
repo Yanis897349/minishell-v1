@@ -33,11 +33,11 @@ typedef struct builtins {
 } builtins_t;
 
 void exit_shell(command_t *command);
-void cd(command_t *command);
+void change_directory(command_t *command);
 
 static const builtins_t BUILTINS[] = {
     {"exit", &exit_shell},
-    {"cd", &cd},
+    {"cd", &change_directory},
     {NULL, NULL}
 };
 

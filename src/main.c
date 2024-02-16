@@ -14,6 +14,7 @@
 #include "include/my_strings.h"
 #include "include/my_io.h"
 #include "include/my_std.h"
+#include "src/command.h"
 #include "src/shell.h"
 #include "src/external.h"
 
@@ -47,16 +48,8 @@ int main(int argc, char **argv, char **env)
         my_putstr("$> ");
         input = get_user_input();
         arg = buffer_to_array(input, ' ');
-        if (my_strcmp(arg[0], "exit") == 0) {
-            my_putstr("exit\n");
-            break;
-        } else
-            try_execute_paths(build_exec_paths(arg[0], env), arg, env);
+        run_command(build_command(arg[0], arg, env));
         wait(NULL);
-        free(input);
-        my_freearray(arg);
     }
-    free(input);
-    my_freearray(arg);
     return 84;
 }
