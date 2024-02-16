@@ -8,6 +8,7 @@
 #include "include/my_strings.h"
 #include "include/my_io.h"
 #include "include/my_std.h"
+#include "src/command.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +59,21 @@ char **build_exec_paths(char *cmd, char **env)
     return path;
 }
 
-void try_execute_paths(char **paths, char **args, char **env)
+char *find_execute_paths(char **paths)
+{
+    char *path = NULL;
+
+    for (int i = 0; paths[i] != NULL; i++) {
+        if (access(paths[i], X_OK) == 0) {
+            path = my_strdup(paths[i]);
+            my_freearray(paths);
+            return path;
+        }
+    }
+    return NULL;
+}
+
+void execute_external(command_t command)
 {
     pid_t pid = fork();
 
@@ -66,18 +81,10 @@ void try_execute_paths(char **paths, char **args, char **env)
         perror("fork");
         exit(84);
     }
-    if (pid != 0) {
-        my_freearray(paths);
+    if (pid != 0)
         return;
-    }
-    for (int i = 0; paths[i] != NULL; i++) {
-        if (access(paths[i], X_OK) == 0) {
-            execve(paths[i], args, env);
-            perror("execve");
-            exit(84);
-        }
-    }
-    my_putstr(args[0]);
-    my_putstr(": Command not found.\n");
-    exit(84);
+    if (command.exec.path != NULL)
+        execve(command.exec.path, command.args, command.env);
+    else
+        execve(command.name, command.args, command.env);
 }

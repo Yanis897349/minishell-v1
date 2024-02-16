@@ -6,6 +6,8 @@
 */
 
 #pragma once
+#include "command.h"
 
 char **build_exec_paths(char *cmd, char **env);
-void try_execute_paths(char **paths, char **args, char **env);
+char *find_execute_paths(char **paths);
+void execute_external(command_t command);
