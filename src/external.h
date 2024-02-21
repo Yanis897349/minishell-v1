@@ -10,4 +10,4 @@
 
 char **build_exec_paths(char *cmd, char **env);
 char *find_execute_paths(char **paths);
-void execute_external(command_t command);
+void execute_external(command_t *command);

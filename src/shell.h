@@ -12,3 +12,5 @@ typedef struct shell_s {
 } shell_t;
 
 shell_t *init_shell(char **env);
+shell_t *get_shell(char **env);
+void destroy_shell(shell_t *shell);

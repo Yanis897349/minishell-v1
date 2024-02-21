@@ -9,6 +9,8 @@
 #include "external.h"
 #include "include/my_strings.h"
 #include "include/my_std.h"
+#include "src/shell.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 static command_t build_builtin(char *cmd, char **args, char **env,
@@ -36,7 +38,7 @@ static command_t build_external(char *cmd, char **args, char **env)
     return command;
 }
 
-static void destroy_command(command_t command)
+void destroy_command(command_t command)
 {
     switch (command.type) {
         case BUILTIN:
@@ -48,10 +50,13 @@ static void destroy_command(command_t command)
             my_freearray(command.args);
             break;
     }
+    free(command.name);
 }
 
-command_t build_command(char *cmd, char **args, char **env)
+command_t build_command(char *cmd, char **args)
 {
+    char **env = get_shell(NULL)->env;
+
     for (int i = 0; BUILTINS[i].name != NULL; i++)
         if (my_strcmp(cmd, BUILTINS[i].name) == 0)
             return build_builtin(cmd, args, env, BUILTINS[i].func);
@@ -65,7 +70,7 @@ void run_command(command_t command)
             command.exec.func(&command);
             break;
         case EXTERNAL:
-            execute_external(command);
+            execute_external(&command);
             break;
     }
     destroy_command(command);

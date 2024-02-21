@@ -9,6 +9,7 @@
 #include "include/my_io.h"
 #include "include/my_std.h"
 #include "src/command.h"
+#include "src/error.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -70,12 +71,14 @@ char *find_execute_paths(char **paths)
             return path;
         }
     }
+    my_freearray(paths);
     return NULL;
 }
 
-void execute_external(command_t command)
+void execute_external(command_t *command)
 {
     pid_t pid = fork();
+    int status = 0;
 
     if (pid == -1) {
         perror("fork");
@@ -83,8 +86,10 @@ void execute_external(command_t command)
     }
     if (pid != 0)
         return;
-    if (command.exec.path != NULL)
-        execve(command.exec.path, command.args, command.env);
+    if (command->exec.path != NULL)
+        status = execve(command->exec.path, command->args, command->env);
     else
-        execve(command.name, command.args, command.env);
+        status = execve(command->name, command->args, command->env);
+    if (status == -1)
+        handle_error(CMD_NOT_FOUND, command, status);
 }

@@ -16,7 +16,6 @@
 #include "include/my_std.h"
 #include "src/command.h"
 #include "src/shell.h"
-#include "src/external.h"
 
 static int count_args(char **args)
 {
@@ -41,15 +40,22 @@ static char *get_user_input(void)
 
 int main(int argc, char **argv, char **env)
 {
+    shell_t *shell = get_shell(env);
     char **arg = NULL;
     char *input = NULL;
 
+    if (shell == NULL)
+        return 84;
     while (1) {
         my_putstr("$> ");
         input = get_user_input();
+        if (my_strlen(input) == 0) {
+            free(input);
+            continue;
+        }
         arg = buffer_to_array(input, ' ');
-        run_command(build_command(arg[0], arg, env));
+        run_command(build_command(input, arg));
         wait(NULL);
     }
-    return 84;
+    return 0;
 }

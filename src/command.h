@@ -41,5 +41,6 @@ static const builtins_t BUILTINS[] = {
     {NULL, NULL}
 };
 
-command_t build_command(char *cmd, char **args, char **env);
+void destroy_command(command_t command);
+command_t build_command(char *cmd, char **args);
 void run_command(command_t command);
