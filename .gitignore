@@ -8,6 +8,9 @@
 /include
 /tester
 
+# Commitizen
+node_modules
+
 # Object files
 *.o
 *.ko
