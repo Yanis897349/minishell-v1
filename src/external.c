@@ -6,10 +6,10 @@
 */
 
 #include "include/my_strings.h"
-#include "include/my_io.h"
 #include "include/my_std.h"
-#include "src/command.h"
-#include "src/error.h"
+#include "command.h"
+#include "error.h"
+#include "env.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -23,12 +23,7 @@ static char **get_paths(char **env)
     char *tmp = NULL;
     int i = 0;
 
-    for (; env[i] != NULL; i++) {
-        if (my_strncmp(env[i], "PATH=", 4) == 0) {
-            tmp = my_strdup(env[i] + 5);
-            break;
-        }
-    }
+    tmp = my_strdup(my_getenv("PATH="));
     if (tmp == NULL)
         return NULL;
     path = buffer_to_array(tmp, ':');

@@ -9,6 +9,7 @@ SRC = ./src/external.c \
 	./src/shell.c \
 	./src/command.c \
 	./src/error.c \
+	./src/env.c \
 	./src/Builtins/exit.c \
 	./src/Builtins/cd.c
 SRC_TEST = ./tests/test_external.c

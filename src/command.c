@@ -13,6 +13,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+static int count_args(char **args)
+{
+    int i = 0;
+
+    for (; args[i] != NULL; i++);
+    return i - 1;
+}
+
 static command_t build_builtin(char *cmd, char **args, char **env,
     void (*func)(command_t *command))
 {
@@ -21,6 +29,7 @@ static command_t build_builtin(char *cmd, char **args, char **env,
     command.type = BUILTIN;
     command.name = cmd;
     command.args = args;
+    command.args_count = count_args(args);
     command.env = env;
     command.exec.func = func;
     return command;
@@ -33,6 +42,7 @@ static command_t build_external(char *cmd, char **args, char **env)
     command.type = EXTERNAL;
     command.name = cmd;
     command.args = args;
+    command.args_count = count_args(args);
     command.env = env;
     command.exec.path = find_execute_paths(build_exec_paths(cmd, env));
     return command;

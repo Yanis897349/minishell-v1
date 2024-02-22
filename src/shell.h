@@ -9,6 +9,8 @@
 
 typedef struct shell_s {
     char **env;
+    int env_size;
+    char *old_pwd;
 } shell_t;
 
 shell_t *init_shell(char **env);

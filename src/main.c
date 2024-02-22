@@ -16,14 +16,7 @@
 #include "include/my_std.h"
 #include "src/command.h"
 #include "src/shell.h"
-
-static int count_args(char **args)
-{
-    int i = 0;
-
-    for (; args[i] != NULL; i++);
-    return i - 1;
-}
+#include "include/my_std.h"
 
 static char *get_user_input(void)
 {
@@ -38,7 +31,8 @@ static char *get_user_input(void)
     return line;
 }
 
-int main(int argc, char **argv, char **env)
+int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv,
+    char **env)
 {
     shell_t *shell = get_shell(env);
     char **arg = NULL;
@@ -47,7 +41,8 @@ int main(int argc, char **argv, char **env)
     if (shell == NULL)
         return 84;
     while (1) {
-        my_putstr("$> ");
+        if (isatty(STDIN_FILENO))
+            my_putstr("$> ");
         input = get_user_input();
         if (my_strlen(input) == 0) {
             free(input);

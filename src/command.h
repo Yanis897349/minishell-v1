@@ -24,6 +24,7 @@ typedef struct command_s {
     char *name;
     char **args;
     char **env;
+    int args_count;
     command_exec_t exec;
 } command_t;
 
