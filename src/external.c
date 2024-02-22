@@ -59,6 +59,8 @@ char *find_execute_paths(char **paths)
 {
     char *path = NULL;
 
+    if (paths == NULL)
+        return NULL;
     for (int i = 0; paths[i] != NULL; i++) {
         if (access(paths[i], X_OK) == 0) {
             path = my_strdup(paths[i]);
