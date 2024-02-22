@@ -13,8 +13,9 @@
 #include <sys/wait.h>
 #include "include/my_strings.h"
 #include "include/my_io.h"
-#include "src/command.h"
-#include "src/shell.h"
+#include "command.h"
+#include "shell.h"
+#include "handlers.h"
 
 static char *get_user_input(void)
 {
@@ -65,7 +66,11 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv,
         if (manage_user_input() == 1)
             break;
         wait(&child_status);
+        if (WIFSIGNALED(child_status))
+            handle_signal(child_status);
     }
     destroy_shell(shell);
-    return 0;
+    if (WIFEXITED(child_status))
+        exit(WEXITSTATUS(child_status));
+    exit(child_status);
 }

@@ -9,6 +9,7 @@
 #include "include/my_std.h"
 #include "command.h"
 #include "error.h"
+#include "handlers.h"
 #include "env.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,5 +89,5 @@ void execute_external(command_t *command)
     else
         status = execve(command->name, command->args, command->env);
     if (status == -1)
-        handle_error(CMD_NOT_FOUND, command, status);
+        handle_error(command, status);
 }

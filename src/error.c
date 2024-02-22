@@ -9,8 +9,10 @@
 #include "include/my_io.h"
 #include "src/command.h"
 #include "src/shell.h"
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 
 void print_cmd_not_found(command_t *command, int status)
 {
@@ -18,17 +20,23 @@ void print_cmd_not_found(command_t *command, int status)
     my_putstr(": Command not found.\n");
 }
 
-void handle_error(error_t error_code, command_t *command, int status)
+void print_not_enough_rights(command_t *command, int status)
+{
+    my_putstr(command->name);
+    my_putstr(": Permission denied.\n");
+}
+
+void handle_error(command_t *command, int status)
 {
     shell_t *shell = get_shell(NULL);
 
     for (int i = 0; ERROR_HANDLERS[i].error_code != 0; i++) {
-        if (error_code == ERROR_HANDLERS[i].error_code) {
+        if (errno == ERROR_HANDLERS[i].error_code) {
             ERROR_HANDLERS[i].handler(command, status);
             break;
         }
     }
     destroy_command(*command);
     destroy_shell(shell);
-    exit(status);
+    exit(EXIT_FAILURE);
 }

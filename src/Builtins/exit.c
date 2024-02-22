@@ -8,6 +8,7 @@
 #include "include/my_io.h"
 #include "src/command.h"
 #include "src/shell.h"
+#include <stdlib.h>
 
 void exit_shell(command_t *command)
 {
@@ -15,5 +16,5 @@ void exit_shell(command_t *command)
 
     destroy_shell(shell);
     my_putstr("exit\n");
-    exit(0);
+    exit(EXIT_SUCCESS);
 }
