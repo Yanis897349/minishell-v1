@@ -45,6 +45,13 @@ static void replace_env(command_t *command, shell_t *shell)
     }
 }
 
+static void build_new_env(char **env, char *name, char *value)
+{
+    my_strcpy(*env, name);
+    my_strcat(*env, "=");
+    my_strcat(*env, value);
+}
+
 static void create_env(command_t *command, shell_t *shell)
 {
     char **env = malloc(sizeof(char *) * (shell->env_size + 2));
@@ -63,9 +70,7 @@ static void create_env(command_t *command, shell_t *shell)
     }
     free(shell->env);
     env[shell->env_size] = malloc(my_strlen(name) + my_strlen(value) + 2);
-    my_strcpy(env[shell->env_size], name);
-    my_strcat(env[shell->env_size], "=");
-    my_strcat(env[shell->env_size], value);
+    build_new_env(&env[shell->env_size], name, value);
     shell->env = env;
     shell->env_size++;
 }
