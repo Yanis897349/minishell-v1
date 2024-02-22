@@ -13,10 +13,8 @@
 #include <sys/wait.h>
 #include "include/my_strings.h"
 #include "include/my_io.h"
-#include "include/my_std.h"
 #include "src/command.h"
 #include "src/shell.h"
-#include "include/my_std.h"
 
 static char *get_user_input(void)
 {
@@ -31,26 +29,43 @@ static char *get_user_input(void)
     return line;
 }
 
+static void print_prompt(void)
+{
+    if (isatty(STDIN_FILENO))
+        my_putstr("$> ");
+}
+
+static int manage_user_input(void)
+{
+    char *input = NULL;
+    char **arg = NULL;
+
+    input = get_user_input();
+    if (input == NULL)
+        return 1;
+    if (my_strlen(input) == 0) {
+        free(input);
+        return 0;
+    }
+    arg = buffer_to_array(input, ' ');
+    run_command(build_command(input, arg));
+    return 0;
+}
+
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char **argv,
     char **env)
 {
     shell_t *shell = get_shell(env);
-    char **arg = NULL;
-    char *input = NULL;
+    int child_status = 0;
 
     if (shell == NULL)
         return 84;
     while (1) {
-        if (isatty(STDIN_FILENO))
-            my_putstr("$> ");
-        input = get_user_input();
-        if (my_strlen(input) == 0) {
-            free(input);
-            continue;
-        }
-        arg = buffer_to_array(input, ' ');
-        run_command(build_command(input, arg));
-        wait(NULL);
+        print_prompt();
+        if (manage_user_input() == 1)
+            break;
+        wait(&child_status);
     }
+    destroy_shell(shell);
     return 0;
 }
