@@ -12,7 +12,10 @@ SRC = ./src/external.c \
 	./src/env.c \
 	./src/handlers.c \
 	./src/Builtins/exit.c \
-	./src/Builtins/cd.c
+	./src/Builtins/cd.c \
+	./src/Builtins/setenv.c \
+	./src/Builtins/showenv.c \
+	./src/Builtins/unsetenv.c
 SRC_TEST = ./tests/test_external.c
 MAIN = ./src/main.c
 
