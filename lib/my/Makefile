@@ -71,6 +71,7 @@ STRINGS_FUNCS = ./strings/my_revstr.c \
 				 ./strings/my_str_isupper.c \
 				 ./strings/my_str_islower.c \
 				 ./strings/my_str_isalpha.c \
+				 ./strings/my_str_isalphanum.c \
 				 ./strings/my_putnbr_base.c \
 				 ./strings/my_putnbr_base_unsigned.c \
 				 ./strings/my_putnbr_base_int64.c \

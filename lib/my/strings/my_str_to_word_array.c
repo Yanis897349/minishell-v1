@@ -10,13 +10,26 @@
 #include <stdlib.h>
 #include <stddef.h>
 
+static int is_delim(char c, char const *delim)
+{
+    char const *default_delim = " \t\n";
+
+    if (delim == NULL)
+        delim = default_delim;
+    for (int i = 0; delim[i] != '\0'; i++) {
+        if (c == delim[i])
+            return 1;
+    }
+    return 0;
+}
+
 static int count_words(char const *str)
 {
     int count = 0;
     int in_word = 0;
 
     for (int i = 0; str[i] != '\0'; i++) {
-        if (my_isdigit(str[i]) || my_isalpha(str[i])) {
+        if (!is_delim(str[i], NULL)) {
             in_word = 1;
             continue;
         }
@@ -34,7 +47,7 @@ static void find_word(const char *str, int *i, const char **word_start,
     int *word_len)
 {
     for (; str[*i] != '\0'; (*i)++) {
-        if (my_isdigit(str[*i]) || my_isalpha(str[*i])) {
+        if (!is_delim(str[*i], NULL)) {
             *word_start = (*word_len == 0) ? &str[*i] : *word_start;
             (*word_len)++;
             continue;
