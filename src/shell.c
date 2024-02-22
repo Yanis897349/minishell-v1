@@ -24,10 +24,10 @@ shell_t *init_shell(char **env)
         free(shell);
         return NULL;
     }
-    my_memset(shell->env, 0, sizeof(char *) * (env_size + 1));
     for (int i = 0; i < env_size; i++) {
         shell->env[i] = my_strdup(env[i]);
     }
+    shell->env[env_size] = NULL;
     return shell;
 }
 

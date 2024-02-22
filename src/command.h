@@ -35,10 +35,16 @@ typedef struct builtins {
 
 void exit_shell(command_t *command);
 void change_directory(command_t *command);
+void set_env(command_t *command);
+void show_env(__attribute__((unused)) command_t *command);
+void unset_env(command_t *command);
 
 static const builtins_t BUILTINS[] = {
     {"exit", &exit_shell},
     {"cd", &change_directory},
+    {"setenv", &set_env},
+    {"env", &show_env},
+    {"unsetenv", &unset_env},
     {NULL, NULL}
 };
 

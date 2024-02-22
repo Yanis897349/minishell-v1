@@ -40,6 +40,7 @@ static int manage_user_input(void)
 {
     char *input = NULL;
     char **arg = NULL;
+    const char *delims = " \t";
 
     input = get_user_input();
     if (input == NULL)
@@ -48,8 +49,9 @@ static int manage_user_input(void)
         free(input);
         return 0;
     }
-    arg = buffer_to_array(input, ' ');
-    run_command(build_command(input, arg));
+    arg = my_str_to_word_array(input);
+    free(input);
+    run_command(build_command(arg[0], arg));
     return 0;
 }
 

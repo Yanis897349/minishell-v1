@@ -60,7 +60,6 @@ void destroy_command(command_t command)
             my_freearray(command.args);
             break;
     }
-    free(command.name);
 }
 
 command_t build_command(char *cmd, char **args)
