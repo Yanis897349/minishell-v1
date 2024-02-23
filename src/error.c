@@ -12,35 +12,18 @@
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/wait.h>
-
-void print_cmd_not_found(command_t *command)
-{
-    my_putstr(command->name);
-    my_putstr(": Command not found.\n");
-}
-
-void print_not_enough_rights(command_t *command)
-{
-    my_putstr(command->name);
-    my_putstr(": Permission denied.\n");
-}
 
 void handle_error(command_t *command, int status)
 {
     shell_t *shell = get_shell(NULL);
-    int handled = 0;
 
-    for (int i = 0; ERROR_HANDLERS[i].error_code != 0; i++) {
-        if (errno == ERROR_HANDLERS[i].error_code) {
-            ERROR_HANDLERS[i].handler(command);
-            handled = 1;
-            break;
-        }
-    }
-    if (!handled)
-        perror(command->name);
-    if (status != 1)
+    my_putstr(command->name);
+    my_putstr(": ");
+    my_putstr(strerror(errno));
+    my_putstr(".\n");
+    if (status != -1)
         return;
     destroy_command(*command);
     destroy_shell(shell);
