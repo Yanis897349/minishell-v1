@@ -18,11 +18,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-static char **get_paths(char **env)
+static char **get_paths(void)
 {
     char **path = NULL;
     char *tmp = NULL;
-    int i = 0;
 
     tmp = my_strdup(my_getenv("PATH="));
     if (tmp == NULL)
@@ -32,14 +31,14 @@ static char **get_paths(char **env)
     return path;
 }
 
-char **build_exec_paths(char *cmd, char **env)
+char **build_exec_paths(char *cmd)
 {
     char **path = NULL;
     char *old_path = NULL;
 
     if (cmd == NULL)
         return NULL;
-    path = get_paths(env);
+    path = get_paths();
     if (path == NULL)
         return NULL;
     for (int i = 0; path[i] != NULL; i++) {

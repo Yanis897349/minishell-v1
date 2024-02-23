@@ -40,7 +40,6 @@ static int manage_user_input(void)
 {
     char *input = NULL;
     char **arg = NULL;
-    const char *delims = " \t";
 
     input = get_user_input();
     if (input == NULL)

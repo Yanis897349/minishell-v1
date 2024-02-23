@@ -10,7 +10,7 @@
 #include "src/shell.h"
 #include <stdlib.h>
 
-void exit_shell(command_t *command)
+void exit_shell(__attribute__((unused)) command_t *command)
 {
     shell_t *shell = get_shell(NULL);
 

@@ -33,7 +33,7 @@ typedef struct builtins {
     void (*func)(command_t *command);
 } builtins_t;
 
-void exit_shell(command_t *command);
+void exit_shell(__attribute__((unused)) command_t *command);
 void change_directory(command_t *command);
 void set_env(command_t *command);
 void show_env(__attribute__((unused)) command_t *command);

@@ -14,13 +14,13 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-void print_cmd_not_found(command_t *command, int status)
+void print_cmd_not_found(command_t *command)
 {
     my_putstr(command->name);
     my_putstr(": Command not found.\n");
 }
 
-void print_not_enough_rights(command_t *command, int status)
+void print_not_enough_rights(command_t *command)
 {
     my_putstr(command->name);
     my_putstr(": Permission denied.\n");
@@ -33,7 +33,7 @@ void handle_error(command_t *command, int status)
 
     for (int i = 0; ERROR_HANDLERS[i].error_code != 0; i++) {
         if (errno == ERROR_HANDLERS[i].error_code) {
-            ERROR_HANDLERS[i].handler(command, status);
+            ERROR_HANDLERS[i].handler(command);
             handled = 1;
             break;
         }
