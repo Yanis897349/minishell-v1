@@ -27,6 +27,14 @@ void print_not_enough_rights(command_t *command)
     my_putstr(": Permission denied.\n");
 }
 
+static void print_errno(command_t *command)
+{
+    my_putstr(command->name);
+    my_putstr(": ");
+    my_putstr(strerror(errno));
+    my_putstr(".\n");
+}
+
 void handle_error(command_t *command, int status)
 {
     shell_t *shell = get_shell(NULL);
@@ -39,12 +47,8 @@ void handle_error(command_t *command, int status)
             break;
         }
     }
-    if (!handled) {
-        my_putstr(command->name);
-        my_putstr(": ");
-        my_putstr(strerror(errno));
-        my_putstr(".\n");
-    }
+    if (!handled)
+        print_errno(command);
     if (status != -1)
         return;
     destroy_command(*command);
