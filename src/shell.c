@@ -37,7 +37,7 @@ shell_t *get_shell(char **env)
 
     if (shell == NULL && env != NULL) {
         shell = init_shell(env);
-        shell->old_pwd = my_strdup(my_getenv("OLDPWD="));
+        shell->old_pwd = NULL;
     }
     return shell;
 }
