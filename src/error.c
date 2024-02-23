@@ -36,6 +36,8 @@ void handle_error(command_t *command, int status)
             break;
         }
     }
+    if (status != 1)
+        return;
     destroy_command(*command);
     destroy_shell(shell);
     exit(EXIT_FAILURE);

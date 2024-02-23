@@ -12,6 +12,7 @@
 #include "include/my_strings.h"
 #include "src/command.h"
 #include "src/env.h"
+#include "src/error.h"
 #include "src/shell.h"
 
 static void change_previous_directory(command_t *command, shell_t *shell)
@@ -20,7 +21,7 @@ static void change_previous_directory(command_t *command, shell_t *shell)
     char pwd[PATH_MAX];
 
     if (getcwd(pwd, PATH_MAX) == NULL) {
-        perror("getcwd");
+        handle_error(command, 0);
         return;
     }
     if (old_pwd == NULL) {
@@ -28,7 +29,7 @@ static void change_previous_directory(command_t *command, shell_t *shell)
         return;
     }
     if (chdir(old_pwd) == -1) {
-        perror("chdir");
+        handle_error(command, 0);
     } else {
         shell->old_pwd = my_strdup(pwd);
         free(old_pwd);
@@ -41,7 +42,7 @@ static void change_home_directory(command_t *command, shell_t *shell)
     char pwd[PATH_MAX];
 
     if (getcwd(pwd, PATH_MAX) == NULL) {
-        perror("getcwd");
+        handle_error(command, 0);
         return;
     }
     if (home == NULL) {
@@ -49,7 +50,7 @@ static void change_home_directory(command_t *command, shell_t *shell)
         return;
     }
     if (chdir(home) == -1)
-        perror("chdir");
+        handle_error(command, 0);
     else {
         free(shell->old_pwd);
         shell->old_pwd = my_strdup(pwd);
@@ -62,11 +63,11 @@ static void change_regular_directory(command_t *command, shell_t *shell)
     char new_pwd[PATH_MAX];
 
     if (getcwd(new_pwd, PATH_MAX) == NULL) {
-        perror("getcwd");
+        handle_error(command, 0);
         return;
     }
     if (chdir(command->args[1]) == -1) {
-        perror("chdir");
+        handle_error(command, 0);
     } else {
         shell->old_pwd = my_strdup(new_pwd);
         free(old_pwd);
