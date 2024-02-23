@@ -11,7 +11,6 @@
 #include "src/shell.h"
 #include "include/my_ctype.h"
 #include "include/my_strings.h"
-#include "include/my_std.h"
 #include <stdio.h>
 
 static int check_args_sanity(char **args)
@@ -32,17 +31,23 @@ static void replace_env(command_t *command, shell_t *shell)
 {
     char *name = command->args[1];
     char *value = command->args[2];
+    char *path_name = malloc(my_strlen(name) + 2);
 
+    my_strcpy(path_name, name);
+    my_strcat(path_name, "=");
     for (int i = 0; shell->env[i] != NULL; i++) {
-        if (my_strncmp(shell->env[i], name, my_strlen(name) - 1) == 0) {
+        if (my_strncmp(shell->env[i], path_name,
+            my_strlen(path_name) - 1) == 0) {
             free(shell->env[i]);
             shell->env[i] = malloc(my_strlen(name) + my_strlen(value) + 2);
             my_strcpy(shell->env[i], name);
             my_strcat(shell->env[i], "=");
             my_strcat(shell->env[i], value);
+            free(path_name);
             return;
         }
     }
+    free(path_name);
 }
 
 static void build_new_env(char **env, char *name, char *value)
@@ -58,6 +63,7 @@ static void create_env(command_t *command, shell_t *shell)
     char *name = command->args[1];
     char *value = NULL;
 
+    my_memset(env, 0, sizeof(char *) * (shell->env_size + 2));
     if (env == NULL)
         return;
     if (command->args_count == 1)

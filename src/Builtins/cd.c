@@ -38,7 +38,7 @@ static void change_previous_directory(command_t *command, shell_t *shell)
 
 static void change_home_directory(command_t *command, shell_t *shell)
 {
-    char *home = my_getenv("HOME=");
+    char *home = my_getenv("HOME");
     char pwd[PATH_MAX];
 
     if (getcwd(pwd, PATH_MAX) == NULL) {

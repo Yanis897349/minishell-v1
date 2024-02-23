@@ -9,7 +9,6 @@
 #include "include/my_std.h"
 #include "command.h"
 #include "error.h"
-#include "handlers.h"
 #include "env.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +22,7 @@ static char **get_paths(void)
     char **path = NULL;
     char *tmp = NULL;
 
-    tmp = my_strdup(my_getenv("PATH="));
+    tmp = my_strdup(my_getenv("PATH"));
     if (tmp == NULL)
         return NULL;
     path = buffer_to_array(tmp, ':');
