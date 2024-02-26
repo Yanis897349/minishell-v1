@@ -19,11 +19,13 @@ typedef struct error_handler_s {
 void print_cmd_not_found(command_t *command);
 void print_not_enough_rights(command_t *command);
 void print_format_error(command_t *command);
+void print_not_directory(command_t *command);
 
 static const error_handler_t ERROR_HANDLERS[] = {
     {ENOENT, &print_cmd_not_found},
     {EACCES, &print_not_enough_rights},
     {ENOEXEC, &print_format_error},
+    {ENOTDIR, &print_not_directory},
     {0, NULL}
 };
 

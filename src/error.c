@@ -21,16 +21,25 @@ void print_cmd_not_found(command_t *command)
     my_putstr(": Command not found.\n");
 }
 
-void print_not_enough_rights(command_t *command)
+void print_not_directory(command_t *command)
 {
     my_putstr(command->args[1]);
+    my_putstr(": Not a directory.\n");
+}
+
+void print_not_enough_rights(command_t *command)
+{
+    if (command->args[1] == NULL)
+        my_putstr(command->name);
+    else
+        my_putstr(command->args[1]);
     my_putstr(": Permission denied.\n");
 }
 
 void print_format_error(command_t *command)
 {
     my_putstr(command->name);
-    my_putstr(": Exec format error. Binary file not executable.\n");
+    my_putstr(": Exec format error. Wrong Architecture.\n");
 }
 
 static void print_errno(command_t *command)
