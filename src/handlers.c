@@ -11,11 +11,18 @@
 
 void handle_signal(int child_status)
 {
-    if (WTERMSIG(child_status) == SIGFPE)
+    int handled = 0;
+
+    if (WTERMSIG(child_status) == SIGFPE) {
+        handled = 1;
         my_putstr("Floating exception");
-    if (WTERMSIG(child_status) == SIGSEGV)
+    }
+    if (WTERMSIG(child_status) == SIGSEGV) {
+        handled = 1;
         my_putstr("Segmentation fault");
+    }
     if (WCOREDUMP(child_status))
         my_putstr(" (core dumped)");
-    my_putstr("\n");
+    if (handled)
+        my_putstr("\n");
 }
