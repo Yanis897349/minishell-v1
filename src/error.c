@@ -27,6 +27,12 @@ void print_not_enough_rights(command_t *command)
     my_putstr(": Permission denied.\n");
 }
 
+void print_format_error(command_t *command)
+{
+    my_putstr(command->name);
+    my_putstr(": Exec format error. Binary file not executable.\n");
+}
+
 static void print_errno(command_t *command)
 {
     my_putstr(command->name);
