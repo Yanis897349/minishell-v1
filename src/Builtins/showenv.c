@@ -15,7 +15,7 @@ void show_env(command_t *command)
     shell_t *shell = get_shell(NULL);
 
     if (command->args_count != 0) {
-        my_putstr("env: Too many arguments.\n");
+        my_putstr_error("env: Too many arguments.\n");
         return;
     }
     for (int i = 0; i < shell->env_size; i++) {

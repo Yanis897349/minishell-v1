@@ -17,37 +17,37 @@
 
 void print_cmd_not_found(command_t *command)
 {
-    my_putstr(command->name);
-    my_putstr(": Command not found.\n");
+    my_putstr_error(command->name);
+    my_putstr_error(": Command not found.\n");
 }
 
 void print_not_directory(command_t *command)
 {
-    my_putstr(command->args[1]);
-    my_putstr(": Not a directory.\n");
+    my_putstr_error(command->args[1]);
+    my_putstr_error(": Not a directory.\n");
 }
 
 void print_not_enough_rights(command_t *command)
 {
     if (command->args[1] == NULL)
-        my_putstr(command->name);
+        my_putstr_error(command->name);
     else
-        my_putstr(command->args[1]);
-    my_putstr(": Permission denied.\n");
+        my_putstr_error(command->args[1]);
+    my_putstr_error(": Permission denied.\n");
 }
 
 void print_format_error(command_t *command)
 {
-    my_putstr(command->name);
-    my_putstr(": Exec format error. Wrong Architecture.\n");
+    my_putstr_error(command->name);
+    my_putstr_error(": Exec format error. Wrong Architecture.\n");
 }
 
 static void print_errno(command_t *command)
 {
-    my_putstr(command->name);
-    my_putstr(": ");
-    my_putstr(strerror(errno));
-    my_putstr(".\n");
+    my_putstr_error(command->name);
+    my_putstr_error(": ");
+    my_putstr_error(strerror(errno));
+    my_putstr_error(".\n");
 }
 
 void handle_error(command_t *command, int status)

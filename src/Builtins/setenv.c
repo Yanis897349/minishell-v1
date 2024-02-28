@@ -16,12 +16,12 @@
 static int check_args_sanity(char **args)
 {
     if (!my_isalpha(args[1][0])) {
-        my_putstr("setenv: Variable name must begin with a letter.\n");
+        my_putstr_error("setenv: Variable name must begin with a letter.\n");
         return 1;
     }
     if (my_str_isalphanum(args[1]) == 0) {
-        my_putstr("setenv: Variable name must");
-        my_putstr(" contain alphanumeric characters.\n");
+        my_putstr_error("setenv: Variable name must");
+        my_putstr_error(" contain alphanumeric characters.\n");
         return 1;
     }
     return 0;
@@ -91,7 +91,7 @@ void set_env(command_t *command)
         return;
     }
     if (command->args_count > 2) {
-        my_putstr("setenv: Too many arguments.\n");
+        my_putstr_error("setenv: Too many arguments.\n");
         return;
     }
     if (check_args_sanity(command->args) == 1)

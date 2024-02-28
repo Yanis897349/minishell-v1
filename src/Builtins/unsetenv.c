@@ -43,7 +43,7 @@ void unset_env(command_t *command)
     char *env = NULL;
 
     if (command->args_count == 0) {
-        my_putstr("unsetenv: Too few arguments.\n");
+        my_putstr_error("unsetenv: Too few arguments.\n");
         return;
     }
     env = my_getenv(command->args[1]);

@@ -15,14 +15,14 @@ void handle_signal(int child_status)
 
     if (WTERMSIG(child_status) == SIGFPE) {
         handled = 1;
-        my_putstr("Floating exception");
+        my_putstr_error("Floating exception");
     }
     if (WTERMSIG(child_status) == SIGSEGV) {
         handled = 1;
-        my_putstr("Segmentation fault");
+        my_putstr_error("Segmentation fault");
     }
     if (WCOREDUMP(child_status))
-        my_putstr(" (core dumped)");
+        my_putstr_error(" (core dumped)");
     if (handled)
-        my_putstr("\n");
+        my_putstr_error("\n");
 }

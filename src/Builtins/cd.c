@@ -25,7 +25,7 @@ static void change_previous_directory(command_t *command, shell_t *shell)
         return;
     }
     if (old_pwd == NULL) {
-        my_putstr(": No such file or directory.\n");
+        my_putstr_error(": No such file or directory.\n");
         return;
     }
     if (chdir(old_pwd) == -1) {
@@ -46,7 +46,7 @@ static void change_home_directory(command_t *command, shell_t *shell)
         return;
     }
     if (home == NULL) {
-        my_putstr("cd: No home directory.\n");
+        my_putstr_error("cd: No home directory.\n");
         return;
     }
     if (chdir(home) == -1)
@@ -79,7 +79,7 @@ void change_directory(command_t *command)
     shell_t *shell = get_shell(NULL);
 
     if (command->args_count >= 2) {
-        my_putstr("cd: Too many arguments.\n");
+        my_putstr_error("cd: Too many arguments.\n");
         return;
     }
     if (command->args[1] == NULL || my_strcmp(command->args[1], "~") == 0) {
