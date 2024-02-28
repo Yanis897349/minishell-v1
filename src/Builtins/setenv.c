@@ -27,34 +27,43 @@ static int check_args_sanity(char **args)
     return 0;
 }
 
+static void build_new_env(char **env, char *name, char *value)
+{
+    my_strcpy(*env, name);
+    my_strcat(*env, "=");
+    my_strcat(*env, value);
+}
+
+static void replace_env_build(char *name, char *value, int i)
+{
+    shell_t *shell = get_shell(NULL);
+
+    shell->env[i] = malloc(my_strlen(name) + my_strlen(value) + 2);
+    build_new_env(&shell->env[i], name, value);
+}
+
 static void replace_env(command_t *command, shell_t *shell)
 {
     char *name = command->args[1];
-    char *value = command->args[2];
+    char *value = NULL;
     char *path_name = malloc(my_strlen(name) + 2);
 
+    if (command->args_count == 1)
+        value = my_strdup("");
+    else
+        value = command->args[2];
     my_strcpy(path_name, name);
     my_strcat(path_name, "=");
     for (int i = 0; shell->env[i] != NULL; i++) {
         if (my_strncmp(shell->env[i], path_name,
             my_strlen(path_name) - 1) == 0) {
             free(shell->env[i]);
-            shell->env[i] = malloc(my_strlen(name) + my_strlen(value) + 2);
-            my_strcpy(shell->env[i], name);
-            my_strcat(shell->env[i], "=");
-            my_strcat(shell->env[i], value);
+            replace_env_build(name, value, i);
             free(path_name);
             return;
         }
     }
     free(path_name);
-}
-
-static void build_new_env(char **env, char *name, char *value)
-{
-    my_strcpy(*env, name);
-    my_strcat(*env, "=");
-    my_strcat(*env, value);
 }
 
 static void create_env(command_t *command, shell_t *shell)
