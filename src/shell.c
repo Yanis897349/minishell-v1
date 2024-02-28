@@ -7,7 +7,6 @@
 
 #include "shell.h"
 #include "include/my_strings.h"
-#include "src/env.h"
 #include <stdio.h>
 #include <stdlib.h>
 
